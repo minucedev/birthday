@@ -6,44 +6,97 @@
     <title>Chúc mừng sinh nhật ThanhQuin</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             text-align: center;
             background-color: #cfe0a9;
             font-family: 'Pacifico', cursive;
-            overflow: hidden;
-            animation: fadeIn 2s ease-in-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+        .content-wrapper {
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         h1 {
             color: #3e7043;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-            font-size: 2.5em;
+            font-size: min(2.5em, 8vw);
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: min(1.2em, 5vw);
+            margin-bottom: 20px;
         }
         .container {
-            position: relative;
-            margin-top: 30px;
-            animation: scaleIn 1.5s ease-in-out;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 500px;
         }
         img {
-            width: 80%;
-            max-width: 300px;
+            width: min(80%, 300px);
             height: auto;
             border-radius: 15px;
             box-shadow: 0px 0px 15px #3e7043;
             animation: bounce 3s infinite;
+            display: block;
+            margin: 0 auto;
         }
         .fishes {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             overflow: hidden;
+            pointer-events: none;
         }
         .fish {
             position: absolute;
-            width: 50px;
+            width: min(50px, 15vw);
             height: auto;
-            animation: swim 12s infinite linear;
+            pointer-events: auto;
+        }
+        .nav-button {
+            display: inline-block;
+            margin: 20px auto;
+            padding: min(12px, 3vw) min(24px, 6vw);
+            background-color: #3e7043;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Pacifico', cursive;
+            font-size: min(1.2em, 5vw);
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .nav-button:hover {
+            background-color: #2c5230;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+        #fishCount {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: min(1em, 4vw);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 10px;
+            z-index: 2;
         }
         @keyframes swim {
             0% { transform: translateX(-10vw); }
@@ -53,47 +106,89 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @keyframes scaleIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        @media (max-width: 600px) {
-            h1 { font-size: 2em; }
+
+        /* Responsive cho màn hình nhỏ */
+        @media screen and (max-height: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                margin-bottom: 10px;
+            }
+            .container {
+                margin: 10px auto;
+            }
+            img {
+                width: min(60%, 200px);
+            }
+            .nav-button {
+                margin: 10px auto;
+            }
+        }
+
+        /* Responsive cho màn hình lớn */
+        @media screen and (min-width: 1200px) {
+            .content-wrapper {
+                max-width: 1000px;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+            p {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Chúc Mừng Sinh Nhật ThanhQuin 🎉</h1>
-    <p>Chúc bạn có một ngày sinh nhật thật vui vẻ, hạnh phúc và tràn đầy yêu thương! 🍵</p>
-    <div class="container">
-        <img src="thanhquin.jpeg" alt="Ảnh chúc mừng sinh nhật Matcha">
+    <div class="content-wrapper">
+        <h1>Chúc Mừng Sinh Nhật ThanhQuin 🎉</h1>
+        <p>Chúc bạn có một ngày sinh nhật thật vui vẻ, hạnh phúc và tràn đầy yêu thương! 🍵</p>
+        <div class="container">
+            <img src="thanhquin.jpeg" alt="Ảnh chúc mừng sinh nhật Matcha" onclick="window.location.href='birthday_page2.html'" style="cursor: pointer;">
+        </div>
+        <button class="nav-button" onclick="window.location.href='birthday_page2.html'">Xem Lời Chúc 🎂</button>
     </div>
     <div class="fishes"></div>
     <audio id="birthdayMusic" autoplay loop>
         <source src="birthday_song.mp3" type="audio/mpeg">
     </audio>
     <script>
+        let fishCount = 0;
+            function updateFishCount() {
+        document.getElementById('fishCount').textContent = `Số cá bị kích: ${fishCount}`;
+        localStorage.setItem("fishCount", fishCount); // Lưu số lượng cá vào localStorage
+    }
+
         function createFishes(num) {
             const fishContainer = document.querySelector('.fishes');
-            for (let i = 0; i < num; i++) {
+            setInterval(() => {
                 let fish = document.createElement('img');
                 fish.className = 'fish';
-                fish.src = 'https://png.pngtree.com/png-clipart/20190920/original/pngtree-cute-blue-puffer-fish-png-image_4620187.jpg'; // Ảnh cá nóc
+                fish.src = 'https://png.pngtree.com/png-clipart/20190920/original/pngtree-cute-blue-puffer-fish-png-image_4620187.jpg';
                 fish.style.top = Math.random() * 80 + 'vh';
-                fish.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                let speed = Math.random() * 4 + 4;
+                fish.style.animation = `swim ${speed}s linear infinite`;
                 fishContainer.appendChild(fish);
                 
                 fish.addEventListener('mouseenter', () => fish.style.animationPlayState = 'paused');
                 fish.addEventListener('mouseleave', () => fish.style.animationPlayState = 'running');
                 fish.addEventListener('touchstart', () => fish.style.animationPlayState = 'paused');
                 fish.addEventListener('touchend', () => fish.style.animationPlayState = 'running');
-            }
+                fish.addEventListener('click', () => {
+                    fish.remove();
+                    fishCount++;
+                    updateFishCount();
+                });
+            }, 1000);
         }
         createFishes(10);
     </script>
+
+
 </body>
 </html>
