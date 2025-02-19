@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc mừng sinh nhật ThanhQuin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        body {
+            text-align: center;
+            background-color: #cfe0a9;
+            font-family: 'Pacifico', cursive;
+            overflow: hidden;
+            animation: fadeIn 2s ease-in-out;
+        }
+        h1 {
+            color: #3e7043;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            font-size: 2.5em;
+        }
+        .container {
+            position: relative;
+            margin-top: 30px;
+            animation: scaleIn 1.5s ease-in-out;
+        }
+        img {
+            width: 80%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px #3e7043;
+            animation: bounce 3s infinite;
+        }
+        .fishes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        .fish {
+            position: absolute;
+            width: 50px;
+            height: auto;
+            animation: swim 12s infinite linear;
+        }
+        @keyframes swim {
+            0% { transform: translateX(-10vw); }
+            100% { transform: translateX(110vw); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Chúc Mừng Sinh Nhật ThanhQuin 🎉</h1>
+    <p>Chúc bạn có một ngày sinh nhật thật vui vẻ, hạnh phúc và tràn đầy yêu thương! 🍵</p>
+    <div class="container">
+        <img src="thanhquin.jpeg" alt="Ảnh chúc mừng sinh nhật Matcha">
+    </div>
+    <div class="fishes"></div>
+    <audio id="birthdayMusic" autoplay loop>
+        <source src="birthday_song.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        function createFishes(num) {
+            const fishContainer = document.querySelector('.fishes');
+            for (let i = 0; i < num; i++) {
+                let fish = document.createElement('img');
+                fish.className = 'fish';
+                fish.src = 'https://png.pngtree.com/png-clipart/20190920/original/pngtree-cute-blue-puffer-fish-png-image_4620187.jpg'; // Ảnh cá nóc
+                fish.style.top = Math.random() * 80 + 'vh';
+                fish.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                fishContainer.appendChild(fish);
+                
+                fish.addEventListener('mouseenter', () => fish.style.animationPlayState = 'paused');
+                fish.addEventListener('mouseleave', () => fish.style.animationPlayState = 'running');
+                fish.addEventListener('touchstart', () => fish.style.animationPlayState = 'paused');
+                fish.addEventListener('touchend', () => fish.style.animationPlayState = 'running');
+            }
+        }
+        createFishes(10);
+    </script>
+</body>
+</html>
